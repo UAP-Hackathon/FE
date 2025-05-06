@@ -4,11 +4,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Api from '../Api';
+import { toast } from 'react-hot-toast';
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
-import { toast } from 'react-hot-toast';
-
-
+import { baseURL } from '../BaseUrl';
 export default function LoginPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -16,43 +18,47 @@ export default function LoginPage() {
     password: '',
   });
   const [error, setError] = useState('');
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
+  
     if (!formData.email || !formData.password) {
       toast.error("Please enter both email and password!");
       return;
     }
-
+  
     try {
-      const response = await Api.post("api/auth/login", {
-        email: formData.email,
-        password: formData.password
+      const response = await fetch(`${baseURL}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
       });
-
-      if (response.status === 200) {
+  
+      if (response.ok) {
+        const data = await response.json();
         toast.success("Login successful!");
-        console.log(response.data);
-        
-        
-        if (response.data.role.id !== 0) {
+        console.log(data);
+  
+        if (data.role.id !== 0) {
           localStorage.setItem("sidebar", "true");
-          
         }
-        
+  
         router.push('/');
       } else {
-        toast.error(response.data.message || "Login failed");
+        const errorData = await response.json();
+        toast.error(errorData.message || "Login failed");
       }
     } catch (err) {
       toast.error("Login failed. Please try again.");
       setError('Invalid email or password');
     }
   };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -62,91 +68,96 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div>
         <Navbar />
-        <main>
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <Link href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
-              create a new account
-            </Link>
-          </p>
-        </div>
-        
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && (
-            <div className="rounded-md bg-red-50 p-4">
-              <div className="text-sm text-red-700">{error}</div>
-            </div>
-          )}
-          
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email" className="sr-only">Email address</label>
-              <input
+        <main className="min-h-screen bg-gradient-to-r from-purple-500 to-pink-500">
+      <div className="container flex items-center justify-center min-h-screen px-4 md:px-6">
+        <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-2xl shadow-xl">
+          <div className="space-y-4 text-center">
+            <h1 className="text-3xl font-bold tracking-tighter">
+              Welcome Back
+            </h1>
+            <p className="text-gray-500">
+              Sign in to your account to continue
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="p-3 text-sm text-red-600 bg-red-50 rounded-lg">
+                {error}
+              </div>
+            )}
+
+            <div className="space-y-2">
+              <Label htmlFor="email">Email Address</Label>
+              <Input
                 id="email"
                 name="email"
                 type="email"
+                placeholder="you@example.com"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
                 value={formData.email}
                 onChange={handleChange}
+                className="w-full"
               />
             </div>
-            <div>
-              <label htmlFor="password" className="sr-only">Password</label>
-              <input
+
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
                 id="password"
                 name="password"
                 type="password"
+                placeholder="••••••••"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
+                className="w-full"
               />
             </div>
-          </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-              />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                Remember me
-              </label>
-            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  id="remember-me"
+                  name="remember-me"
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                />
+                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                  Remember me
+                </label>
+              </div>
 
-            <div className="text-sm">
-              <Link href="/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500">
-                Forgot your password?
+              <Link
+                href="/forgot-password"
+                className="text-sm font-medium text-purple-600 hover:text-purple-500"
+              >
+                Forgot password?
               </Link>
             </div>
-          </div>
 
-          <div>
-            <button
+            <Button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-full bg-black hover:bg-gray-800"
             >
-              Sign in
-            </button>
-          </div>
-        </form>
+              Sign In
+            </Button>
+
+            <p className="text-center text-sm text-gray-500">
+              Don't have an account?{' '}
+              <Link
+                href="/register"
+                className="font-medium text-purple-600 hover:text-purple-500"
+              >
+                Sign up
+              </Link>
+            </p>
+          </form>
+        </div>
       </div>
-    </div>
-        </main>
+    </main>
         <Footer />
     </div>
   );
