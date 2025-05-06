@@ -29,6 +29,9 @@ export default function Navbar() {
           <Button asChild variant="outline" className="rounded-full">
             <Link href="/login">Log In</Link>
           </Button>
+          <Button asChild variant="default" className="rounded-full">
+            <Link href="/profile">Profile</Link>
+          </Button>
           <Button asChild className="rounded-full bg-black text-white hover:bg-gray-800">
             <Link href="#apply">Apply Now</Link>
           </Button>
