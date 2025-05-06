@@ -27,7 +27,7 @@ export default function Navbar() {
             Testimonials
           </Link>
           <Button asChild variant="outline" className="rounded-full">
-            <Link href="#apply">Log In</Link>
+            <Link href="/login">Log In</Link>
           </Button>
           <Button asChild className="rounded-full bg-black text-white hover:bg-gray-800">
             <Link href="#apply">Apply Now</Link>
@@ -66,7 +66,7 @@ export default function Navbar() {
               Testimonials
             </Link>
             <Button asChild variant="outline" className="rounded-full w-full">
-              <Link href="#apply" onClick={() => setIsMenuOpen(false)}>
+              <Link href="/login" onClick={() => setIsMenuOpen(false)}>
                 Log In
               </Link>
             </Button>
