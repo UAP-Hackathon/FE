@@ -348,77 +348,81 @@ export default function ProfilePage() {
                         {jobRecommendations.map((job) => (
                           <Card 
                             key={job.job_id} 
-                            className="overflow-hidden bg-white/80 hover:bg-white/95 transition-all duration-300 hover:shadow-lg border border-gray-100"
+                            className="border-l-4 border-l-gray-300 hover:border-l-purple-500 transition-all duration-300"
                           >
-                            <CardHeader className="p-6">
+                            <CardHeader className="pb-2">
                               <div className="flex justify-between items-start">
-                                <div className="space-y-2">
-                                  <CardTitle className="text-xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-                                    {job.title}
-                                  </CardTitle>
-                                  <CardDescription className="text-sm flex items-center space-x-2">
-                                    <Briefcase className="h-4 w-4" />
-                                    <span>{job.company_name}</span>
-                                    <span>•</span>
-                                    <MapPin className="h-4 w-4" />
-                                    <span>{job.location}</span>
-                                  </CardDescription>
-                                </div>
-                                <Badge 
-                                  className={`
-                                    ${job.match_score >= 0.6 
-                                      ? 'bg-gradient-to-r from-green-500 to-emerald-500' 
-                                      : 'bg-gradient-to-r from-yellow-500 to-orange-500'
-                                    } 
-                                    text-white font-medium px-3 py-1 rounded-full shadow-sm
-                                  `}
-                                >
-                                  {Math.round(job.match_score * 100)}% Match
-                                </Badge>
-                              </div>
-                            </CardHeader>
-                            <CardContent className="p-6 pt-0 space-y-4">
-                              {job.matched_skills.length > 0 && (
                                 <div>
-                                  <p className="text-sm font-medium mb-2 text-gray-700">Matched Skills:</p>
-                                  <div className="flex flex-wrap gap-2">
-                                    {job.matched_skills.map((skill, idx) => (
-                                      <Badge 
-                                        key={idx}
-                                        className="bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 hover:from-purple-200 hover:to-pink-200 transition-colors border border-purple-200"
-                                      >
-                                        {skill}
-                                      </Badge>
-                                    ))}
+                                  <CardTitle className="text-xl font-bold">{job.title}</CardTitle>
+                                  <CardDescription>{job.company_name}</CardDescription>
+                                </div>
+                                <div className="text-right">
+                                  <div className="text-sm font-medium">Match Score</div>
+                                  <div className="flex items-center">
+                                    <div className="w-16 h-4 bg-gray-200 rounded-full mr-2">
+                                      <div 
+                                        className={`h-full rounded-full ${
+                                          job.match_score >= 0.6 
+                                            ? 'bg-gradient-to-r from-green-500 to-emerald-500'
+                                            : 'bg-gradient-to-r from-yellow-500 to-orange-500'
+                                        }`}
+                                        style={{ width: `${job.match_score * 100}%` }}
+                                      />
+                                    </div>
+                                    <span className="text-sm font-bold">
+                                      {Math.round(job.match_score * 100)}%
+                                    </span>
                                   </div>
                                 </div>
-                              )}
-                              {job.missing_skills.length > 0 && (
+                              </div>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                  <p className="text-sm font-medium mb-2 text-gray-700">Skills to Develop:</p>
+                                  <div className="flex items-center mb-2">
+                                    <MapPin className="h-4 w-4 mr-1 text-gray-500" />
+                                    <span className="text-sm">{job.location || 'Remote'}</span>
+                                  </div>
+                                  <div className="text-sm mb-4">
+                                    <span className="font-medium">Salary: </span>
+                                    <span className="text-purple-600">${job.salary}</span>
+                                  </div>
+                                  <div>
+                                    <h4 className="text-sm font-semibold mb-2">Matched Skills</h4>
+                                    <div className="flex flex-wrap gap-2">
+                                      {job.matched_skills.length > 0 ? (
+                                        job.matched_skills.map((skill, idx) => (
+                                          <Badge 
+                                            key={idx}
+                                            className="bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border-purple-200"
+                                          >
+                                            {skill}
+                                          </Badge>
+                                        ))
+                                      ) : (
+                                        <span className="text-sm text-gray-500 italic">No matched skills</span>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div>
+                                  <h4 className="text-sm font-semibold mb-2">Skills to Develop</h4>
                                   <div className="flex flex-wrap gap-2">
                                     {job.missing_skills.map((skill, idx) => (
                                       <Badge 
                                         key={idx}
-                                        className="bg-red-50 text-red-600 hover:bg-red-100 transition-colors border border-red-200"
+                                        variant="outline" 
+                                        className="text-orange-800 border-orange-200 bg-orange-50"
                                       >
                                         {skill}
                                       </Badge>
                                     ))}
                                   </div>
                                 </div>
-                              )}
-                              <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                                <div className="text-sm font-medium text-gray-700">
-                                  {job.salary && (
-                                    <div className="flex items-center">
-                                      <span className="font-normal text-gray-500">Salary:</span>
-                                      <span className="ml-2 text-purple-600">${job.salary}</span>
-                                    </div>
-                                  )}
-                                </div>
+                              </div>
+                              <div className="mt-4 flex justify-end">
                                 <button 
-                                  className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full font-medium hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-sm hover:shadow-md"
+                                  className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-md font-medium hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-sm hover:shadow-md"
                                   onClick={() => window.open(`/jobs/${job.job_id}`, '_blank')}
                                 >
                                   Apply Now
