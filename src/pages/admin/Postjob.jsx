@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { useAuth } from "../../context/Auth";
 import { message } from "antd";
 import Layout from "../../components/layout/Layout";
 import { Loader } from "lucide-react";
 
 function Postjob() {
-  const { setAuth } = useAuth();
+  
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
@@ -54,7 +53,7 @@ function Postjob() {
       });
 
       if (response.ok) {
-        alert("Job created successfully!");
+        message.success("Job created successfully!");
         // Clear form
         setFormData({
           title: "",
@@ -66,11 +65,11 @@ function Postjob() {
           experience: "",
         });
       } else {
-        alert("Failed to create job");
+        message.error("Failed to create job");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Error creating job");
+      message.error("Error creating job");
     }
   };
 

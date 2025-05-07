@@ -1,4 +1,5 @@
 import AdminProfile from "./pages/admin/AdminProfile"
+import MatchJob from "./pages/admin/MatchJob"
 import Postjob from "./pages/admin/Postjob"
 import CodingBased from "./pages/AIPages/CodingBased"
 import ImageGenerate from "./pages/AIPages/ImageGenerate"
@@ -22,6 +23,7 @@ function App() {
       <Route path="/resumeGenerator" element={<ResumeGenerator />} />
 
       <Route path="/postjob" element={<Postjob />} />
+      <Route path="/matchJob" element={<MatchJob />} />
     </Routes>
     </>
   )

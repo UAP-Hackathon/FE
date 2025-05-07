@@ -12,7 +12,7 @@ function SideBar() {
     { name: 'Dashboard', href: '/', icon: Home },
     { name: 'Login', href: '/login', icon: Users },
     { name: 'Post Job', href: '/postjob', icon: BookOpen },
-    { name: 'Coding Based', href: '/codingBased', icon: MessageSquare },
+    { name: 'Match Job', href: '/matchJob', icon: MessageSquare },
     { name: 'Video Generate', href: '/videoGenerate', icon: Video },
     { name: 'Resume Generator', href: '/resumeGenerator', icon: FileText },
   ];
