@@ -1,4 +1,5 @@
 import AdminProfile from "./pages/admin/AdminProfile"
+import Postjob from "./pages/admin/Postjob"
 import CodingBased from "./pages/AIPages/CodingBased"
 import ImageGenerate from "./pages/AIPages/ImageGenerate"
 import ResumeGenerator from "./pages/AIPages/ResumeGenerator"
@@ -19,6 +20,8 @@ function App() {
       <Route path="/codingBased" element={<CodingBased />} />
       <Route path="/videoGenerate" element={<VideoGenerate />} />
       <Route path="/resumeGenerator" element={<ResumeGenerator />} />
+
+      <Route path="/postjob" element={<Postjob />} />
     </Routes>
     </>
   )
