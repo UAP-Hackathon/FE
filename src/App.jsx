@@ -9,6 +9,9 @@ import Login from "./pages/authPages/Login"
 import Home from "./pages/home/Home"
 import { Routes, Route } from "react-router-dom"
 import GenAssesment from "./pages/user/GenAssesment"
+import VoiceChat from "./pages/chat/VoiceChat"
+import VoiceChat2 from "./pages/chat/VoiceChat2"
+import CVgenerate from "./pages/chat/CVgenerate"
 
 function App() {
 
@@ -26,6 +29,10 @@ function App() {
       <Route path="/postjob" element={<Postjob />} />
       <Route path="/matchJob" element={<MatchJob />} />
       <Route path="/genAssesment" element={<GenAssesment />} />
+
+      <Route path="/voiceChat" element={<VoiceChat />} />
+      <Route path="/voiceChat2" element={<VoiceChat2 />} />
+      <Route path="/cvgenerate" element={<CVgenerate />} />
     </Routes>
     </>
   )

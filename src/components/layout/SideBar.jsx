@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Menu, X, Settings, Users, BookOpen, MessageSquare, Video, FileText } from 'lucide-react';
+import { Home, Menu, X, Settings, Users, BookOpen, MessageSquare, Video, FileText  , VoicemailIcon} from 'lucide-react';
 //eslint-disable-next-line
 import { motion } from 'framer-motion';
 
@@ -14,7 +14,9 @@ function SideBar() {
     { name: 'Post Job', href: '/postjob', icon: BookOpen },
     { name: 'Match Job', href: '/matchJob', icon: MessageSquare },
     { name: 'Generate Assesment', href: '/genAssesment', icon: Video },
-    { name: 'Resume Generator', href: '/resumeGenerator', icon: FileText },
+    { name: 'Brain Gym', href: '/voiceChat', icon: FileText },
+    { name: 'Voice Chat', href: '/voiceChat2', icon: VoicemailIcon },
+    { name: 'CV Generate', href: '/cvgenerate', icon: FileText },
   ];
 
   const toggleSidebar = () => {
