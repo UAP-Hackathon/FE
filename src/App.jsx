@@ -8,6 +8,7 @@ import VideoGenerate from "./pages/AIPages/VideoGenerate"
 import Login from "./pages/authPages/Login"
 import Home from "./pages/home/Home"
 import { Routes, Route } from "react-router-dom"
+import GenAssesment from "./pages/user/GenAssesment"
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
 
       <Route path="/postjob" element={<Postjob />} />
       <Route path="/matchJob" element={<MatchJob />} />
+      <Route path="/genAssesment" element={<GenAssesment />} />
     </Routes>
     </>
   )
