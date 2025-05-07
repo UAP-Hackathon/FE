@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useState, useRef } from "react";
 import Layout from "../../components/layout/Layout";
 //eslint-disable-next-line
@@ -24,6 +22,8 @@ const Bubble = ({ size, delay, duration, left }) => (
 function Home() {
   const [bubbles, setBubbles] = useState([]);
   const canvasRef = useRef(null);
+  const [aiLines, setAiLines] = useState([]);
+  const [aiDots, setAiDots] = useState([]);
 
   useEffect(() => {
     // Generate random bubbles
@@ -35,6 +35,30 @@ function Home() {
       left: Math.random() * 100,
     }));
     setBubbles(newBubbles);
+
+    // Generate AI network lines
+    const lines = Array.from({ length: 8 }, (_, i) => ({
+      id: i,
+      x1: Math.random() * 100,
+      y1: Math.random() * 100,
+      x2: Math.random() * 100,
+      y2: Math.random() * 100,
+      opacity: Math.random() * 0.5 + 0.2,
+      duration: Math.random() * 4 + 3,
+      delay: Math.random() * 2,
+    }));
+    setAiLines(lines);
+
+    // Generate AI network dots
+    const dots = Array.from({ length: 6 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 6 + 2,
+      pulse: Math.random() * 2 + 1,
+      delay: Math.random() * 2,
+    }));
+    setAiDots(dots);
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -184,7 +208,7 @@ function Home() {
   return (
     <Layout>
       <section
-        className="relative flex items-center justify-center min-h-screen py-20 md:py-32 overflow-hidden bg-gradient-to-r from-purple-900 via-purple-700 to-fuchsia-700 text-white"
+        className="relative flex items-center justify-center min-h-screen py-20 md:py-32 overflow-hidden bg-gradient-to-r from-purple-900 via-purple-700 to-fuchsia-700 text-white px-20"
         style={{
           fontFamily:
             "SF Pro Display, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif",
@@ -227,43 +251,104 @@ function Home() {
               </div>
             </div>
             <div className="flex justify-center lg:justify-end">
-              <div className="relative w-[220px] h-[300px] md:w-[300px] md:h-[380px] lg:w-[340px] lg:h-[440px] rotate-6 hover:rotate-0 transition-all duration-700 ml-4 md:ml-8 lg:ml-12 card-glow-group">
-                <div className="absolute inset-0 bg-gradient-to-r from-green-300 to-emerald-400 rounded-2xl shadow-2xl transform transition-all duration-700 hover:scale-110 animate-float card-glow">
-                  <div className="absolute inset-0.5 bg-black rounded-2xl p-6 flex flex-col justify-between animate-pulse">
+              {/* SkillBridge AI Card */}
+              <div className="relative w-[220px] h-[300px] md:w-[300px] md:h-[380px] lg:w-[340px] lg:h-[440px] rotate-6 hover:rotate-0 transition-all duration-700 ml-4 md:ml-8 lg:ml-12">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-2xl shadow-2xl transform transition-all duration-700 hover:scale-110 animate-float ai-card-glow">
+                  {/* AI Network Animation */}
+                  <div className="absolute inset-0 overflow-hidden rounded-2xl">
+                    {aiLines.map((line) => (
+                      <div
+                        key={line.id}
+                        className="absolute bg-white/30"
+                        style={{
+                          left: `${line.x1}%`,
+                          top: `${line.y1}%`,
+                          width: `${Math.abs(line.x2 - line.x1)}%`,
+                          height: '1px',
+                          opacity: line.opacity,
+                          transform: `rotate(${Math.atan2(line.y2 - line.y1, line.x2 - line.x1) * (180 / Math.PI)}deg)`,
+                          transformOrigin: 'left center',
+                          animation: `aiLinePulse ${line.duration}s ease-in-out infinite ${line.delay}s`
+                        }}
+                      ></div>
+                    ))}
+                    {aiDots.map((dot) => (
+                      <div
+                        key={dot.id}
+                        className="absolute bg-white rounded-full"
+                        style={{
+                          left: `${dot.x}%`,
+                          top: `${dot.y}%`,
+                          width: `${dot.size}px`,
+                          height: `${dot.size}px`,
+                          animation: `aiDotPulse ${dot.pulse}s ease-in-out infinite ${dot.delay}s`
+                        }}
+                      ></div>
+                    ))}
+                  </div>
+                  
+                  <div className="absolute inset-0.5 bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-sm rounded-2xl p-6 flex flex-col justify-between">
                     <div className="flex justify-between items-start">
-                      <div className="w-12 h-8 rounded bg-gradient-to-r from-green-600 to-emerald-700"></div>
+                      <div className="w-12 h-8 rounded bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center">
+                        <div className="w-3 h-3 rounded-full bg-white animate-pulse"></div>
+                      </div>
                       <div className="text-right">
-                        <p className="text-xs text-gray-400 text-glow-subtle cursor-pointer">
-                          JOB PORTAL
+                        <p className="text-xs text-gray-300 text-glow-subtle cursor-pointer">
+                          SKILLBRIDGE
                         </p>
-                        <p className="text-xs text-gray-400 text-glow-subtle cursor-pointer">
-                          DASHBOARD CARD
+                        <p className="text-xs text-purple-300 text-glow-subtle cursor-pointer">
+                          AI ASSISTANT
                         </p>
                       </div>
                     </div>
+                    
+                    <div className="space-y-4">
+                      <div className="h-6 w-full bg-purple-900/30 rounded-lg overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg animate-aiProgress" style={{width: '65%'}}></div>
+                      </div>
+                      
+                      <div className="flex space-x-2">
+                        {[1, 2, 3, 4].map((i) => (
+                          <div 
+                            key={i}
+                            className="w-2 h-8 bg-purple-900/30 rounded-full overflow-hidden"
+                          >
+                            <div 
+                              className="w-full bg-purple-500 rounded-full animate-aiEqualizer" 
+                              style={{
+                                height: `${Math.random() * 50 + 30}%`, 
+                                animationDelay: `${i * 0.1}s`
+                              }}
+                            ></div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
                     <div>
-                      <p className="text-gray-400 text-xs mb-1 text-glow-subtle cursor-pointer">
-                        Profile ID
+                      <p className="text-gray-300 text-xs mb-1 text-glow-subtle cursor-pointer">
+                        Neural Network ID
                       </p>
-                      <p className="font-mono text-glow-subtle cursor-pointer">
-                        •••• •••• •••• 2024
+                      <p className="font-mono text-glow-subtle cursor-pointer text-purple-200">
+                        SK•AI•<span className="animate-blink">2024</span>
                       </p>
                     </div>
+                    
                     <div className="flex justify-between items-end">
                       <div>
-                        <p className="text-gray-400 text-xs mb-1 text-glow-subtle cursor-pointer">
-                          Candidate
+                        <p className="text-gray-300 text-xs mb-1 text-glow-subtle cursor-pointer">
+                          Powered By
                         </p>
-                        <p className="font-mono text-glow-subtle cursor-pointer">
-                          USER NAME
+                        <p className="font-mono text-glow-subtle cursor-pointer text-purple-200">
+                          SKILLBRIDGE
                         </p>
                       </div>
                       <div>
-                        <p className="text-gray-400 text-xs mb-1 text-glow-subtle cursor-pointer">
-                          Valid Thru
+                        <p className="text-gray-300 text-xs mb-1 text-glow-subtle cursor-pointer">
+                          Version
                         </p>
-                        <p className="font-mono text-glow-subtle cursor-pointer">
-                          12/29
+                        <p className="font-mono text-glow-subtle cursor-pointer text-purple-200">
+                          3.0
                         </p>
                       </div>
                     </div>
@@ -338,6 +423,61 @@ function Home() {
               transform: translateY(-20px) rotate(8deg);
             }
           }
+          
+          @keyframes aiLinePulse {
+            0%, 100% {
+              opacity: 0.1;
+            }
+            50% {
+              opacity: 0.5;
+            }
+          }
+          
+          @keyframes aiDotPulse {
+            0%, 100% {
+              transform: scale(1);
+              opacity: 0.7;
+            }
+            50% {
+              transform: scale(1.5);
+              opacity: 1;
+            }
+          }
+          
+          @keyframes aiProgress {
+            0%, 100% {
+              width: 65%;
+              opacity: 0.8;
+            }
+            50% {
+              width: 75%;
+              opacity: 1;
+            }
+          }
+          
+          @keyframes aiEqualizer {
+            0%, 100% {
+              height: 30%;
+            }
+            25% {
+              height: 80%;
+            }
+            50% {
+              height: 40%;
+            }
+            75% {
+              height: 60%;
+            }
+          }
+          
+          @keyframes blink {
+            0%, 100% {
+              opacity: 1;
+            }
+            50% {
+              opacity: 0.3;
+            }
+          }
 
           .animate-fadeIn {
             animation: fadeIn 1s ease-out forwards;
@@ -352,6 +492,18 @@ function Home() {
 
           .animate-float {
             animation: float 6s ease-in-out infinite;
+          }
+          
+          .animate-aiProgress {
+            animation: aiProgress 4s ease-in-out infinite;
+          }
+          
+          .animate-aiEqualizer {
+            animation: aiEqualizer 1.5s ease-in-out infinite;
+          }
+          
+          .animate-blink {
+            animation: blink 1.5s ease-in-out infinite;
           }
 
           /* Text glow effects */
@@ -370,7 +522,7 @@ function Home() {
 
           .text-glow-subtle:hover {
             text-shadow: 0 0 5px rgba(255, 255, 255, 0.7),
-              0 0 8px rgba(46, 213, 115, 0.5);
+              0 0 8px rgba(168, 85, 247, 0.7);
           }
 
           .button-glow {
@@ -384,6 +536,15 @@ function Home() {
 
           .card-glow-group:hover .card-glow {
             box-shadow: 0 0 40px 10px #34d399, 0 0 80px 20px #10b981;
+          }
+          
+          .ai-card-glow {
+            box-shadow: 0 0 20px 5px rgba(139, 92, 246, 0.3);
+            transition: box-shadow 0.5s ease;
+          }
+          
+          .ai-card-glow:hover {
+            box-shadow: 0 0 40px 10px rgba(139, 92, 246, 0.6), 0 0 80px 20px rgba(79, 70, 229, 0.4);
           }
 
           .text-glow-hover:hover {

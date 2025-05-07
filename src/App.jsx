@@ -11,6 +11,9 @@ import { Routes, Route } from "react-router-dom"
 import GenAssesment from "./pages/user/GenAssesment"
 import AssessmentPage from "./pages/assesment/assesment"
 import Exam2 from "./pages/assesment/exam2"
+import VoiceChat from "./pages/chat/VoiceChat"
+import VoiceChat2 from "./pages/chat/VoiceChat2"
+import CVgenerate from "./pages/chat/CVgenerate"
 
 function App() {
 
@@ -30,6 +33,9 @@ function App() {
       <Route path="/genAssesment" element={<GenAssesment />} />
       <Route path="/assesment" element={<AssessmentPage />} />
       <Route path="/exam2" element={<Exam2 />} />
+      <Route path="/voiceChat" element={<VoiceChat />} />
+      <Route path="/voiceChat2" element={<VoiceChat2 />} />
+      <Route path="/cvgenerate" element={<CVgenerate />} />
     </Routes>
     </>
   )

@@ -1,25 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Menu, X, Settings, Users, BookOpen, MessageSquare, Video, FileText } from 'lucide-react';
+import { Home, Menu, X, Settings, Users, BookOpen, MessageSquare, Video, FileText  , VoicemailIcon} from 'lucide-react';
 //eslint-disable-next-line
 import { motion } from 'framer-motion';
+import { useAuth } from '../../context/Auth';
 
 function SideBar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
-  const navigation = [
+  const {auth} = useAuth();
+
+  // Define base navigation items
+  const baseNavigation = [
     { name: 'Dashboard', href: '/', icon: Home },
-    { name: 'Login', href: '/login', icon: Users },
-    { name: 'Image Generate', href: '/imageGenerate', icon: BookOpen },
-    { name: 'Coding Based', href: '/codingBased', icon: MessageSquare },
-    { name: 'Video Generate', href: '/videoGenerate', icon: Video },
-    { name: 'Resume Generator', href: '/resumeGenerator', icon: FileText },
-    { name: 'Post Job', href: '/postjob', icon: BookOpen },
+    // { name: 'Login', href: '/login', icon: Users },
     { name: 'Match Job', href: '/matchJob', icon: MessageSquare },
     { name: 'Generate Assesment', href: '/genAssesment', icon: Video },
-    
+    { name: 'Brain Gym', href: '/voiceChat', icon: FileText },
+    { name: 'Voice Chat', href: '/voiceChat2', icon: VoicemailIcon },
+    { name: 'CV Generate', href: '/cvgenerate', icon: FileText },
   ];
+
+  // Add Post Job item only if user ID is 1
+  const navigation = auth?.user?.id === 1 
+    ? [
+        ...baseNavigation.slice(0, 2), 
+        { name: 'Post Job', href: '/postjob', icon: BookOpen },
+        ...baseNavigation.slice(2)
+      ] 
+    : baseNavigation;
+
+  // Close sidebar when route changes
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -61,7 +76,7 @@ function SideBar() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              AI Hub
+              Skill Bridge
             </motion.h1>
           </div>
 
@@ -102,10 +117,7 @@ function SideBar() {
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center shadow-sm">
                 <span className="text-sm font-medium text-white">JD</span>
               </div>
-              <div>
-                <p className="text-sm font-medium text-gray-800">John Doe</p>
-                <p className="text-xs text-blue-600">john@example.com</p>
-              </div>
+              
             </div>
           </div>
         </div>
