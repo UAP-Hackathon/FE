@@ -15,6 +15,10 @@ function SideBar() {
     { name: 'Coding Based', href: '/codingBased', icon: MessageSquare },
     { name: 'Video Generate', href: '/videoGenerate', icon: Video },
     { name: 'Resume Generator', href: '/resumeGenerator', icon: FileText },
+    { name: 'Post Job', href: '/postjob', icon: BookOpen },
+    { name: 'Match Job', href: '/matchJob', icon: MessageSquare },
+    { name: 'Generate Assesment', href: '/genAssesment', icon: Video },
+    
   ];
 
   const toggleSidebar = () => {
